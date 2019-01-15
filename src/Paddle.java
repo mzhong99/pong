@@ -3,12 +3,13 @@ import javafx.scene.paint.Color;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class Paddle extends Entity {
 
     private static final int PADDLE_WIDTH  = 30;
     private static final int PADDLE_HEIGHT = 100;
-    private static final int PADDLE_SPEED  = 100;
+    private static final int PADDLE_SPEED  = 400;
     
     public Paddle(Pong game, TeamType team) {
         super(game, team);
@@ -33,6 +34,41 @@ public class Paddle extends Entity {
         rectangle.setX(position.x);
         rectangle.setY(position.y);
         
+        game.mainScene.addEventHandler(KeyEvent.ANY, new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent event) {
+                if (team == TeamType.RED) {
+                    if (KeyEvent.KEY_PRESSED == event.getEventType()) {
+                        switch(event.getCode()) {
+                            case W: moveUp();   break;
+                            case S: moveDown(); break;
+                        }
+                    }
+                    if (KeyEvent.KEY_RELEASED == event.getEventType()) {
+                        switch(event.getCode()) {
+                            case W: 
+                            case S: standStill();
+                        }
+                    }
+                }
+                if (team == TeamType.BLUE) {
+                    if (KeyEvent.KEY_PRESSED == event.getEventType()) {
+                        switch(event.getCode()) {
+                            case I: moveUp();   break;
+                            case K: moveDown(); break;
+                        }
+                    }
+                    if (KeyEvent.KEY_RELEASED == event.getEventType()) {
+                        switch(event.getCode()) {
+                            case I:
+                            case K: standStill();
+                        }
+                    }
+                }
+            }
+        });
+
         components.put(CType.VIEW, rectangle);
         components.put(CType.POSITION, position);
         components.put(CType.VELOCITY, new Vector2D());

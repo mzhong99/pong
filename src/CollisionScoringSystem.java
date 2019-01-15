@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 public class CollisionScoringSystem implements GameSystem {
     
     private final Pong game;
-    private final double SPEED_BASE = 350;
+    private final double SPEED_BASE = 400;
 
     public CollisionScoringSystem(Pong game) {
         this.game = game;
@@ -105,7 +105,9 @@ public class CollisionScoringSystem implements GameSystem {
                 - 1.0;
         }
 
+        
         blockVelocity.x *= -1;
+        blockVelocity.y  = 0.7 * SPEED_BASE * ((2.0 * Math.random()) - 1.0);
 
         blockable.components.put(CType.POSITION, blockPosition);
         blockable.components.put(CType.VELOCITY, blockVelocity);

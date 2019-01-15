@@ -135,7 +135,8 @@ public class Pong {
             if (IS_RUNNING) {
                 Platform.runLater(new UpdateWorldEvent());
             }
-
+            
+            updateWinState();
             renderSystem.update(entities, deltaTime());
         }
     }
@@ -200,9 +201,11 @@ public class Pong {
         renderSystem.update(entities, 0.1);
     }
 
-    public double deltaTime()          { return DELTA_TIME_NS * 1e-9; }
-    public int    redScore()           { return RED_SCORE;            }
-    public int    blueScore()          { return BLUE_SCORE;           }
-    public void   incrementRedScore()  { RED_SCORE++;                 }
-    public void   incrementBlueScore() { BLUE_SCORE++;                }
+    public double deltaTime()          { return DELTA_TIME_NS * 1e-9;             }
+    public int    redScore()           { return RED_SCORE;                        }
+    public int    blueScore()          { return BLUE_SCORE;                       }
+    public void   incrementRedScore()  { RED_SCORE++;                             }
+    public void   incrementBlueScore() { BLUE_SCORE++;                            }
+    public void   updateWinState()     { IS_RUNNING = RED_SCORE  < SCORE_LIMIT && 
+                                                      BLUE_SCORE < SCORE_LIMIT;   }
 }
