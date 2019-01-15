@@ -178,7 +178,7 @@ public class Pong {
         options = new OptionsPanel();
         
         systems.add(new VelocitySystem());
-        // systems.add(new CollisionScoringSystem(this));
+        systems.add(new CollisionScoringSystem(this));
 
         BorderPane borderPane = new BorderPane();
 

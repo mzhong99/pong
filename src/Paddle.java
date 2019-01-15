@@ -30,6 +30,8 @@ public class Paddle extends Entity {
 
         rectangle.setStroke(teamColor);
         rectangle.setFill(teamColor.darker());
+        rectangle.setX(position.x);
+        rectangle.setY(position.y);
         
         components.put(CType.VIEW, rectangle);
         components.put(CType.POSITION, position);

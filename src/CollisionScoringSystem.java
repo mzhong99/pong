@@ -116,8 +116,8 @@ public class CollisionScoringSystem implements GameSystem {
             needsReflect = true;
         }
         
-        if (position.y > game.WORLD_HEIGHT_OFFSET - rectData.getHeight()) {
-            position.y = game.WORLD_HEIGHT_OFFSET - rectData.getHeight() - 1.0;
+        if (position.y > game.WORLD_HEIGHT + game.WORLD_HEIGHT_OFFSET - rectData.getHeight()) {
+            position.y = game.WORLD_HEIGHT + game.WORLD_HEIGHT_OFFSET - rectData.getHeight() - 1;
             needsReflect = true;
         }
 

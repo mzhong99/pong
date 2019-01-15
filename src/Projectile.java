@@ -3,7 +3,7 @@ import javafx.scene.paint.Color;
 
 public class Projectile extends Entity {
 
-    private static final double STARTING_SPEED = 100;
+    private static final double STARTING_SPEED = 350;
     private static final double DEFAULT_SIZE   = 40;
 
     public Projectile(Pong game) {
