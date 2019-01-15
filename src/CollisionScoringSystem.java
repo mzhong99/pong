@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 public class CollisionScoringSystem implements GameSystem {
     
     private final Pong game;
+    private final double SPEED_BASE = 350;
 
     public CollisionScoringSystem(Pong game) {
         this.game = game;
@@ -59,6 +60,9 @@ public class CollisionScoringSystem implements GameSystem {
         if (needsResolving) {
             resolveCollisionX(blockable, collidable);
         }
+        else {
+            resolveAndScore(blockable);
+        }
     }
 
     private List<Vector2D> getVertices(Rectangle rect) {
@@ -85,16 +89,20 @@ public class CollisionScoringSystem implements GameSystem {
         Vector2D  blockPosition = (Vector2D)   blockable.components.get(CType.POSITION);
         Vector2D  blockVelocity = (Vector2D)   blockable.components.get(CType.VELOCITY);
 
-        Rectangle blockRect     = (Rectangle)  blockable.components.get(CType.VIEW    );
-        Rectangle colliderRect  = (Rectangle) collidable.components.get(CType.VIEW    );
+        Rectangle blockRect     = (Rectangle)  blockable.components.get(CType.VIEW);
+        Rectangle colliderRect  = (Rectangle) collidable.components.get(CType.VIEW);
 
         if (blockVelocity.x < 0) {
-            game.incrementRedScore();
-            blockPosition.x = colliderRect.getX() + colliderRect.getWidth() + 1.0;
+            blockPosition.x = 
+                colliderRect.getX() 
+                + colliderRect.getWidth() 
+                + 1.0;
         }
         else {
-            game.incrementBlueScore();
-            blockPosition.x = colliderRect.getX() - blockRect.getWidth() - 1.0;
+            blockPosition.x = 
+                colliderRect.getX() 
+                - blockRect.getWidth() 
+                - 1.0;
         }
 
         blockVelocity.x *= -1;
@@ -112,7 +120,7 @@ public class CollisionScoringSystem implements GameSystem {
         boolean needsReflect = false;
         
         if (position.y < game.WORLD_HEIGHT_OFFSET) {
-            position.y = game.WORLD_HEIGHT_OFFSET + 1.0;
+            position.y = game.WORLD_HEIGHT_OFFSET + 1;
             needsReflect = true;
         }
         
@@ -129,6 +137,33 @@ public class CollisionScoringSystem implements GameSystem {
         
         if (velocity != null) {
             entity.components.put(CType.VELOCITY, velocity);
+        }
+    }
+
+    private void resolveAndScore(Entity blockable) {
+        
+        Vector2D  position = (Vector2D)  blockable.components.get(CType.POSITION);
+        Vector2D  velocity = (Vector2D)  blockable.components.get(CType.VELOCITY);
+        Rectangle rectData = (Rectangle) blockable.components.get(CType.VIEW    );
+
+        if (position.x + rectData.getWidth() < 0) {
+
+            game.incrementBlueScore();
+            position.x = 0.5 * (game.WORLD_WIDTH  - rectData.getWidth() );
+            position.y = 0.5 * (game.WORLD_HEIGHT - rectData.getHeight());
+
+            velocity.y = (Math.random() * 2 * SPEED_BASE) - SPEED_BASE;
+            velocity.x *= -1;
+        }
+
+        else if (position.x > game.WORLD_WIDTH) {
+
+            game.incrementRedScore();
+            position.x = 0.5 * (game.WORLD_WIDTH  - rectData.getWidth() );
+            position.y = 0.5 * (game.WORLD_HEIGHT - rectData.getHeight());
+
+            velocity.y = (Math.random() * 2 * SPEED_BASE) - SPEED_BASE;
+            velocity.x *= -1;
         }
     }
 }
